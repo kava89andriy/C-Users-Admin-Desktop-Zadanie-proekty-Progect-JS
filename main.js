@@ -2,14 +2,27 @@ const inputName = document.querySelector("#incomeTitle");
 const inputAmount = document.querySelector("#incomeValue");
 const inputSubmit = document.querySelector("#incomeForm");
 
+const incomes = [];
+const expens = [];
+const addIncome = () => {
+  const newIncome = {
+    title: incomeTitle.value,
+    amount: incomeValue.value,
+    id: Math.random(),
+
+  };
+  incomes.push(newIncome);
+  createHtml()
+}
 inputSubmit.addEventListener("submit", (e) => {
   e.preventDefault();
   createHtml();
 });
 function createHtml() {
-  const newItem = document.createElement("li");
+  incomes.forEach((element) => {
+    const newItem = document.createElement("li");
 
-  newItem.textContent = `${inputName.value} ${inputAmount.value}`;
+  newItem.textContent = `${element.value} ${element.value}`;
   const budget__list = document.querySelector(".budget__list");
   budget__list.appendChild(newItem);
   const editButton = document.createElement("button");
@@ -31,4 +44,7 @@ function createHtml() {
     e.preventDefault();
     budget__list.removeChild(newItem);
   });
-}
+});
+
+};
+  
