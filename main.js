@@ -16,13 +16,13 @@ const addIncome = () => {
 }
 inputSubmit.addEventListener("submit", (e) => {
   e.preventDefault();
-  createHtml();
+  addIncome();
 });
 function createHtml() {
   incomes.forEach((element) => {
     const newItem = document.createElement("li");
 
-  newItem.textContent = `${element.value} ${element.value}`;
+  newItem.textContent = `${element.title} ${element.amount}`;
   const budget__list = document.querySelector(".budget__list");
   budget__list.appendChild(newItem);
   const editButton = document.createElement("button");
