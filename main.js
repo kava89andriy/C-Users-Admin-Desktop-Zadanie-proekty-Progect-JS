@@ -1,30 +1,31 @@
 const inputName = document.querySelector("#incomeTitle");
 const inputAmount = document.querySelector("#incomeValue");
 const inputSubmit = document.querySelector("#incomeForm");
+const incomesList = document.querySelector("#incomesList");
 
 const incomes = [];
-const expens = [];
+const expenses = [];
 const addIncome = () => {
   const newIncome = {
     title: incomeTitle.value,
     amount: incomeValue.value,
-    id: Math.random(),
-
+    id: (Math.random() * 100000).toFixed(0),
   };
   incomes.push(newIncome);
-  createHtml()
-}
+  console.log(incomes);
+  renderIncomes();
+};
 inputSubmit.addEventListener("submit", (e) => {
   e.preventDefault();
   addIncome();
 });
-function createHtml() {
+function renderIncomes() {
+  incomesList.innerHTML = "";
   incomes.forEach((element) => {
     const newItem = document.createElement("li");
-
   newItem.textContent = `${element.title} ${element.amount}`;
-  const budget__list = document.querySelector(".budget__list");
-  budget__list.appendChild(newItem);
+  newItem.id = element.id;
+  incomesList.appendChild(newItem);
   const editButton = document.createElement("button");
   editButton.textContent = "Edit";
   editButton.classList.add(
@@ -40,11 +41,19 @@ function createHtml() {
     "budget__list__item__button",
     "budget__list__item__button--delete"
   );
-  deleteButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    budget__list.removeChild(newItem);
+  deleteButton.addEventListener("click", () => {
+    deleteItem(newItem);
+    
   });
+  // editButton.addEventListener("click",()=>{
+  //   editItem(newItem);
+  // })
 });
+};
 
+const deleteItem = (item) => {
+  const indexToRemowe = incomes.findIndex((income) => income.id = item.id);
+  incomes.splice(indexToRemowe, 1);
+  renderIncomes();
 };
   
