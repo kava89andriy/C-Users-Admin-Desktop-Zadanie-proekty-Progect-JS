@@ -164,6 +164,11 @@ A SAMPLE STYLING OF BUDGET LIST ITEM .budget__list__item {
   font-weight: 700;
   line-height: 18px;
 }
+
+.budget__list__item__button--not-visible {
+  display: none;
+}
+
 .budget__list__item__button--edit {
   background-color: var(--edit);
 }
