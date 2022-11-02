@@ -23,7 +23,10 @@ function renderIncomes() {
   incomesList.innerHTML = "";
   incomes.forEach((element) => {
     const newItem = document.createElement("li");
-    newItem.textContent = `${element.title} ${element.amount}`;
+    const span = document.createElement("span");
+
+    span.textContent = `${element.title} ${element.amount}`;
+    newItem.appendChild(span);
     newItem.id = element.id;
     incomesList.appendChild(newItem);
     const editButton = document.createElement("button");
@@ -67,6 +70,19 @@ function renderIncomes() {
       deleteButton.classList.add("budget__list__item__button--not-visible");
       saveButton.classList.remove("budget__list__item__button--not-visible");
       cancelButton.classList.remove("budget__list__item__button--not-visible");
+      span.innerHTML = "";
+      const nameInput = document.createElement("input");
+      nameInput.value = element.title;
+      const amountInput = document.createElement("input");
+      amountInput.value = element.amount;
+      span.appendChild(nameInput);
+      span.appendChild(amountInput);
+      saveButton.addEventListener("click", () =>{
+        const newArray = incomes.map((item) => item.id === element.id ? {
+            ...item ,
+          })
+      } )
+
 
       // const newArray = incomes.map((item) => item.id === element.id ? {
       //   ...item ,
