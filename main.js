@@ -8,11 +8,14 @@ const expenses = [];
 const addIncome = () => {
   const newIncome = {
     title: incomeTitle.value,
-    amount: incomeValue.value,
+    amount: Number(incomeValue.value),
     id: (Math.random() * 100000).toFixed(0),
   };
   incomes.push(newIncome);
-  console.log(incomes);
+  // const incomesSum = incomes.reduce((prevValue, curentValue) => {
+  //   return prevValue + curentValue.amount;
+  // }, 0);
+  // console.log(incomesSum);
   renderIncomes();
 };
 inputSubmit.addEventListener("submit", (e) => {
@@ -77,12 +80,29 @@ function renderIncomes() {
       amountInput.value = element.amount;
       span.appendChild(nameInput);
       span.appendChild(amountInput);
-      saveButton.addEventListener("click", () =>{
-        const newArray = incomes.map((item) => item.id === element.id ? {
-            ...item ,
-          })
-      } )
+      saveButton.addEventListener("click", () => {
+        const updateIncome = (item) => {
+          item.title = nameInput.value;
+          item.amount = amountInput.value;
+        };
+        incomes.map((item) =>
+          item.id === element.id ? updateIncome(item) : item
+        );
+        renderIncomes();
 
+        console.log(nameInput.value, amountInput.value);
+        incomes.map((item) => item.id === element.id);
+      });
+
+      cancelButton.addEventListener("click", () => {
+        // editButton.classList.remove("budget__list__item__button--not-visible");
+        // deleteButton.classList.remove("budget__list__item__button--not-visible");
+        // saveButton.classList.add("budget__list__item__button--not-visible");
+        // cancelButton.classList.add("budget__list__item__button--not-visible");
+        // span.removeChild(nameInput);
+        // span.removeChild(amountInput);
+        renderIncomes();
+      });
 
       // const newArray = incomes.map((item) => item.id === element.id ? {
       //   ...item ,
