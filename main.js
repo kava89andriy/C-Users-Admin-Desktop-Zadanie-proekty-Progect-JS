@@ -2,6 +2,8 @@ const inputName = document.querySelector("#incomeTitle");
 const inputAmount = document.querySelector("#incomeValue");
 const inputSubmit = document.querySelector("#incomeForm");
 const incomesList = document.querySelector("#incomesList");
+let incomesSum = 0;
+let budgetValue = 0;
 
 const incomes = [];
 const expenses = [];
@@ -11,11 +13,13 @@ const addIncome = () => {
     amount: Number(incomeValue.value),
     id: (Math.random() * 100000).toFixed(0),
   };
+  console.log(incomeValue.value)
   incomes.push(newIncome);
+  incomesUpdateSum();
   // const incomesSum = incomes.reduce((prevValue, curentValue) => {
   //   return prevValue + curentValue.amount;
   // }, 0);
-  // console.log(incomesSum);
+
   renderIncomes();
 };
 inputSubmit.addEventListener("submit", (e) => {
@@ -88,9 +92,10 @@ function renderIncomes() {
         incomes.map((item) =>
           item.id === element.id ? updateIncome(item) : item
         );
+        incomesUpdateSum();
         renderIncomes();
 
-        console.log(nameInput.value, amountInput.value);
+        // console.log(nameInput.value, amountInput.value);
         incomes.map((item) => item.id === element.id);
       });
 
@@ -113,6 +118,16 @@ function renderIncomes() {
 
 const deleteItem = (item) => {
   const indexToRemowe = incomes.findIndex((income) => (income.id = item.id));
-  incomes.splice(indexToRemowe, 1);
-  renderIncomes();
+  let itemAmount = incomes[indexToRemowe].amount;
+  console.log(incomes[indexToRemowe]);
+  // incomes.splice(indexToRemowe, 1);
+  // renderIncomes();
+};
+const incomesUpdateSum = () => {
+  incomesSum = incomes.reduce((prevValue, curentValue) => {
+    return +prevValue + +curentValue.amount;
+  }, 0);
+  document.getElementById("incomesValue").innerHTML = incomesSum;
+  document.getElementById("budgetValue").innerHTML = budgetValue + incomesSum;
+  console.log(incomesSum);
 };
