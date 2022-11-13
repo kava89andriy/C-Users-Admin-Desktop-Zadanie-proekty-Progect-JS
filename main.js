@@ -13,7 +13,7 @@ const addIncome = () => {
     amount: Number(incomeValue.value),
     id: (Math.random() * 100000).toFixed(0),
   };
-  console.log(incomeValue.value)
+
   incomes.push(newIncome);
   incomesUpdateSum();
   // const incomesSum = incomes.reduce((prevValue, curentValue) => {
@@ -28,7 +28,7 @@ inputSubmit.addEventListener("submit", (e) => {
 });
 function renderIncomes() {
   incomesList.innerHTML = "";
-  incomes.forEach((element) => {
+  incomes.forEach((element, index) => {
     const newItem = document.createElement("li");
     const span = document.createElement("span");
 
@@ -45,6 +45,7 @@ function renderIncomes() {
 
     newItem.appendChild(editButton);
     const deleteButton = document.createElement("button");
+    deleteButton.id = "deleteBTN" + element.id;
     deleteButton.textContent = "Delete";
     newItem.appendChild(deleteButton);
     deleteButton.classList.add(
@@ -70,7 +71,7 @@ function renderIncomes() {
     );
 
     deleteButton.addEventListener("click", () => {
-      deleteItem(newItem);
+      deleteItem(incomes[index]);
     });
     editButton.addEventListener("click", () => {
       editButton.classList.add("budget__list__item__button--not-visible");
@@ -117,17 +118,19 @@ function renderIncomes() {
 }
 
 const deleteItem = (item) => {
-  const indexToRemowe = incomes.findIndex((income) => (income.id = item.id));
-  let itemAmount = incomes[indexToRemowe].amount;
-  console.log(incomes[indexToRemowe]);
-  // incomes.splice(indexToRemowe, 1);
-  // renderIncomes();
+  const indexToRemowe = incomes.findIndex((income) => income.id == item.id);
+  document.getElementById("incomesValue").innerHTML = incomesSum - item.amount;
+  document.getElementById("budgetValue").innerHTML = budgetValue - item.amount;
+  incomes.splice(indexToRemowe, 1);
+  renderIncomes();
+  incomesSum = incomesSum - item.amount;
+  budgetValue = budgetValue - item.amount;
 };
 const incomesUpdateSum = () => {
   incomesSum = incomes.reduce((prevValue, curentValue) => {
     return +prevValue + +curentValue.amount;
   }, 0);
+  budgetValue = incomesSum;
   document.getElementById("incomesValue").innerHTML = incomesSum;
-  document.getElementById("budgetValue").innerHTML = budgetValue + incomesSum;
-  console.log(incomesSum);
+  document.getElementById("budgetValue").innerHTML = budgetValue;
 };
