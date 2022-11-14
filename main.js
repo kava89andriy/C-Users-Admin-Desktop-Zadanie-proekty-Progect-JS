@@ -2,8 +2,17 @@ const inputName = document.querySelector("#incomeTitle");
 const inputAmount = document.querySelector("#incomeValue");
 const inputSubmit = document.querySelector("#incomeForm");
 const incomesList = document.querySelector("#incomesList");
+
+const inputNameExpenses = document.querySelector("#expenseTitle");
+const inputAmountExpenses = document.querySelector("#expenseValue");
+const inputSubmitExpenses = document.querySelector("#expenseForm");
+const expensesList = document.querySelector("#expensesList");
+
 let incomesSum = 0;
 let budgetValue = 0;
+
+let expensesSum = 0;
+// let budgetValueExpenses = 0;
 
 const incomes = [];
 const expenses = [];
@@ -133,4 +142,128 @@ const incomesUpdateSum = () => {
   budgetValue = incomesSum;
   document.getElementById("incomesValue").innerHTML = incomesSum;
   document.getElementById("budgetValue").innerHTML = budgetValue;
+};
+
+const addExpense = () => {
+  const newexpenses = {
+    titleExpenses: expenseTitle.value,
+    amountExpenses: Number(expenseValue.value),
+    id: (Math.random() * 100000).toFixed(0),
+  };
+  expenses.push(newexpenses);
+  expensesUpdateSum();
+  renderExpenses();
+};
+
+function renderExpenses() {
+  expensesList.innerHTML = "";
+  expenses.forEach((elementExpenses, index) => {
+    const newItemExpenses = document.createElement("li");
+    const spanExpenses = document.createElement("span");
+
+    spanExpenses.textContent = `${elementExpenses.title} ${elementExpenses.amount}`;
+    newItemExpenses.appendChild(span);
+    newItemExpenses.id = elementExpenses.id;
+    expensesList.appendChild(newItemExpenses);
+    const editButtonExpenses = document.createElement("button");
+    editButtonExpenses.textContent = "Edit";
+    editButtonExpenses.classList.add(
+      "budget__list__expenses__item__button",
+      "budget__list__expenses__item__button--edit"
+    );
+
+    newItemExpenses.appendChild(editButton);
+    const deleteButtonExpenses = document.createElement("button");
+    deleteButtonExpenses.id = "deleteBTNExpenses" + elementExpenses.id;
+    deleteButtonExpenses.textContent = "Delete";
+    newItemExpenses.appendChild(deleteButtonExpenses);
+    deleteButtonExpenses.classList.add(
+      "budget__list__expenses__item__button",
+      "budget__list__expenses__item__button--delete"
+    );
+    const saveButtonExpenses = document.createElement("button");
+    saveButtonExpenses.textContent = "Save";
+    newItemExpenses.appendChild(saveButtonExpenses);
+    saveButtonExpenses.classList.add(
+      "budget__list__expenses__item__button",
+      "budget__list__expenses__item__button--save",
+      "budget__list__expenses__item__button--not-visible"
+    );
+
+    const cancelButtonExpenses = document.createElement("button");
+    cancelButtonExpenses.textContent = "Cancel";
+    newItemExpenses.appendChild(cancelButtonExpenses);
+    cancelButtonExpenses.classList.add(
+      "budget__list__expenses__item__button",
+      "budget__list__expenses__item__button--cancel",
+      "budget__list__expenses__item__button--not-visible"
+    );
+
+    deleteButtonExpenses.addEventListener("click", () => {
+      deleteItemExpenses(expenses[index]);
+    });
+    editButtonExpenses.addEventListener("click", () => {
+      editButtonExpenses.classList.add(
+        "budget__list__expenses__item__button--not-visible"
+      );
+      deleteButtonExpenses.classList.add(
+        "budget__list__expenses__item__button--not-visible"
+      );
+      saveButtonExpenses.classList.remove(
+        "budget__list__expenses__item__button--not-visible"
+      );
+      cancelButtonExpenses.classList.remove(
+        "budget__list__expenses__item__button--not-visible"
+      );
+      spanExpenses.innerHTML = "";
+      const nameInputExpenses = document.createElement("input");
+      nameInputExpenses.value = elementExpenses.titleExpenses;
+      const amountInputExpenses = document.createElement("input");
+      amountInputExpenses.value = elementExpenses.amountExpenses;
+      spanExpenses.appendChild(nameInputExpenses);
+      spanExpenses.appendChild(amountInputExpenses);
+      saveButtonExpenses.addEventListener("click", () => {
+        const updateExpenses = (itemExpenses) => {
+          itemExpenses.titleExpenses = nameInputExpenses.value;
+          itemExpenses.amountExpenses = amountInputExpenses.value;
+        };
+        expenses.map((itemExpenses) =>
+          itemExpenses.id === elementExpenses.id
+            ? updateExpenses(itemExpenses)
+            : itemExpenses
+        );
+        expensesUpdateSum();
+        renderExpenses();
+
+        expenses.map((itemExpenses) => itemExpenses.id === elementExpenses.id);
+      });
+
+      cancelButtonExpenses.addEventListener("click", () => {
+        renderExpenses();
+      });
+    });
+  });
+}
+
+const deleteItemExpenses = (itemExpenses) => {
+  const indexToRemowe = expenses.findIndex(
+    (expense) => expense.id == itemExpenses.id
+  );
+  document.getElementById("expensesValue").innerHTML =
+    expensesSum - itemExpenses.amountExpenses;
+  document.getElementById("budgetValue").innerHTML =
+    budgetValue - itemExpenses.amountExpenses;
+  expenses.splice(indexToRemowe, 1);
+  renderExpenses();
+  expensesSum = expensesSum - itemExpenses.amountExpenses;
+  budgetValue = budgetValue - itemExpenses.amountExpenses;
+};
+
+const expensesUpdateSum = () => {
+  expensesSum = expenses.reduce((prevValue, curentValue) => {
+    return +prevValue + +curentValue.amount;
+  }, 0);
+  budgetValueExpenses = expensesSum;
+  document.getElementById("expensesValue").innerHTML = expensesSum;
+  document.getElementById("budgetValue").innerHTML = budgetValueExpenses;
 };
