@@ -149,7 +149,7 @@ h2 {
   }
 }
 
-A SAMPLE STYLING OF BUDGET LIST ITEM .budget__list__item {
+.budget__list__item {
   flex-direction: column;
   padding: 2px 0;
   border: 1px solid var(--white);
