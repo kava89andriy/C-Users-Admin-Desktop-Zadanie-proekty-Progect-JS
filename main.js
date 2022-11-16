@@ -7,7 +7,8 @@ const inputNameExpenses = document.querySelector("#expenseTitle");
 const inputAmountExpenses = document.querySelector("#expenseValue");
 const inputSubmitExpenses = document.querySelector("#expenseForm");
 const expensesList = document.querySelector("#expensesList");
-// const text = document.querySelector(".text--center--down");
+
+
 
 let incomesSum = 0;
 let totalExpanses = 0;
@@ -234,9 +235,10 @@ const incomesUpdateSum = () => {
     return +prevValue + +curentValue.amount;
   }, 0);
   budgetValue = incomesSum - expensesSum;
-  // renderText(budgetValue);
+  
   document.getElementById("incomesValue").innerHTML = incomesSum;
   document.getElementById("budgetValue").innerHTML = budgetValue;
+  renderText(incomesSum, expensesSum, budgetValue);
 };
 
 const expensesUpdateSum = () => {
@@ -246,12 +248,24 @@ const expensesUpdateSum = () => {
   budgetValue = incomesSum - expensesSum;
   document.getElementById("expensesValue").innerHTML = expensesSum;
   document.getElementById("budgetValue").innerHTML = budgetValue;
+  renderText(incomesSum, expensesSum, budgetValue);
 };
 
-// const renderText = (amount) => {
-//   if (amount > 0) {
-//     text.innerText = "You can spend: ";
-//   } else if (amount === 0) {
-//     text.innerText = "You have no money. You budget is: ";
-//   } else text.innerText = "You are in troubles, your budget is: ";
-// };
+const budgetText = document.getElementById("budgetState");
+
+const renderText = (amount, expense, difference) => {
+  if (amount > expense) {
+    budgetText.innerHTML = ` <p class="text--center">
+    You can still spend <span id="budgetValue">${difference}</span> PLN
+  </p>`;
+  } else if (difference === 0) {
+    budgetText.innerHTML = `<p class="text--center">
+    You have no money. You budget is:  <span id="budgetValue">0</span> PLN
+  </p>`;
+  } else if (difference < 0) {
+    budgetText.innerHTML = `<p class="text--center">
+    You are in troubles, your budget is: <span id="budgetValue">${difference}</span> PLN
+  </p>`;
+  }
+};
+

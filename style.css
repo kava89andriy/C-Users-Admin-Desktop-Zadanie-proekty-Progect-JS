@@ -35,9 +35,9 @@ main {
   text-align: center;
 }
 
-/* .text--center--down {
+.text--center--down {
   text-align: center;
-} */
+}
 .app__logo {
   width: 150px;
   height: 150px;
