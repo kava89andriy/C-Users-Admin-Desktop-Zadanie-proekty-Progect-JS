@@ -2,6 +2,7 @@
 
 body {
   background-image: var(--main-bg-gradient);
+
 }
 
 html {
@@ -34,6 +35,9 @@ main {
   text-align: center;
 }
 
+/* .text--center--down {
+  text-align: center;
+} */
 .app__logo {
   width: 150px;
   height: 150px;
@@ -175,6 +179,15 @@ h2 {
 .budget__list__item__button--delete {
   background-color: var(--danger);
 }
+
+.budget__list__item__button--save {
+  background-color: var(--save);
+}
+
+.budget__list__item__button--cancel {
+  background-color: var(--cancel);
+}
+
 @media screen and (min-width: 1024px) {
   .budget__list__item {
     flex-direction: row;

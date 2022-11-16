@@ -7,45 +7,45 @@ const inputNameExpenses = document.querySelector("#expenseTitle");
 const inputAmountExpenses = document.querySelector("#expenseValue");
 const inputSubmitExpenses = document.querySelector("#expenseForm");
 const expensesList = document.querySelector("#expensesList");
+// const text = document.querySelector(".text--center--down");
 
 let incomesSum = 0;
 let totalExpanses = 0;
 let budgetValue = 0;
-
 let expensesSum = 0;
-
 
 const incomes = [];
 const expenses = [];
 
-const addIncome = () => {
-  const newIncome = {
-    title: document.getElementById('incomeTitle').value,
-    amount: Number(document.getElementById('incomeValue').value),
-    id: (Math.random() * 100000).toFixed(0),
-  };
-  incomes.push(newIncome);
-  incomesUpdateSum();
-  renderIncomes();
-};
-const addExpense = () => {
-  const newExpenses = {
-    title: document.getElementById('expenseTitle').value,
-    amount: Number(document.getElementById('expenseValue').value),
-    id: (Math.random() * 100000).toFixed(0),
-  };
-  expenses.push(newExpenses);
-  expensesUpdateSum();
-  renderExpenses();
+const addItem = (type) => {
+  if (type === "incomes") {
+    const newIncome = {
+      title: document.getElementById("incomeTitle").value,
+      amount: Number(document.getElementById("incomeValue").value),
+      id: (Math.random() * 100000).toFixed(0),
+    };
+    incomes.push(newIncome);
+    incomesUpdateSum();
+    renderIncomes();
+  } else {
+    const newExpenses = {
+      title: document.getElementById("expenseTitle").value,
+      amount: Number(document.getElementById("expenseValue").value),
+      id: (Math.random() * 100000).toFixed(0),
+    };
+    expenses.push(newExpenses);
+    expensesUpdateSum();
+    renderExpenses();
+  }
 };
 
 inputSubmit.addEventListener("submit", (e) => {
   e.preventDefault();
-  addIncome();
+  addItem("incomes");
 });
 inputSubmitExpenses.addEventListener("submit", (e) => {
   e.preventDefault();
-  addExpense();
+  addItem("expenses");
 });
 
 function renderIncomes() {
@@ -93,7 +93,7 @@ function renderIncomes() {
     );
 
     deleteButton.addEventListener("click", () => {
-      deleteItem(incomes[index]);
+      deleteItem(incomes[index], "incomes");
     });
     editButton.addEventListener("click", () => {
       editButton.classList.add("budget__list__item__button--not-visible");
@@ -117,8 +117,6 @@ function renderIncomes() {
         );
         incomesUpdateSum();
         renderIncomes();
-
-        // console.log(nameInput.value, amountInput.value);
         incomes.map((item) => item.id === element.id);
       });
 
@@ -131,10 +129,6 @@ function renderIncomes() {
         // span.removeChild(amountInput);
         renderIncomes();
       });
-
-      // const newArray = incomes.map((item) => item.id === element.id ? {
-      //   ...item ,
-      // })
     });
   });
 }
@@ -184,7 +178,7 @@ function renderExpenses() {
     );
 
     deleteButton.addEventListener("click", () => {
-      deleteItemExpenses(expenses[index]);
+      deleteItem(expenses[index], "expenses");
     });
     editButton.addEventListener("click", () => {
       editButton.classList.add("budget__list__item__button--not-visible");
@@ -203,7 +197,7 @@ function renderExpenses() {
           item.title = nameInput.value;
           item.amount = amountInput.value;
         };
-        incomes.map((item) =>
+        expenses.map((item) =>
           item.id === element.id ? updateIncome(item) : item
         );
         expensesUpdateSum();
@@ -213,42 +207,34 @@ function renderExpenses() {
       });
 
       cancelButton.addEventListener("click", () => {
-
         renderIncomes();
       });
     });
   });
 }
 
-const deleteItem = (item) => {
-  const indexToRemowe = incomes.findIndex((income) => income.id == item.id);
-  document.getElementById("incomesValue").innerHTML = incomesSum - item.amount;
-  document.getElementById("budgetValue").innerHTML = budgetValue - item.amount;
-  incomes.splice(indexToRemowe, 1);
-  renderIncomes();
-  incomesSum = incomesSum - item.amount;
-  budgetValue = budgetValue - item.amount;
-};
-
-const deleteItemExpenses = (item) => {
-  const indexToRemowe = expenses.findIndex(
-    (expense) => expense.id == item.id
-  );
-  document.getElementById("expensesValue").innerHTML =
-    totalExpanses - item.amount;
-  document.getElementById("budgetValue").innerHTML =
-    budgetValue - item.amount;
-  expenses.splice(indexToRemowe, 1);
-  renderExpenses();
-  totalExpanses = totalExpanses - item.amount;
-  budgetValue = budgetValue - item.amount;
+const deleteItem = (item, type) => {
+  if (type === "incomes") {
+    const indexToRemowe = incomes.findIndex((income) => income.id == item.id);
+    incomes.splice(indexToRemowe, 1);
+    renderIncomes();
+    incomesUpdateSum();
+  } else {
+    const indexToRemowe = expenses.findIndex(
+      (expense) => expense.id == item.id
+    );
+    expenses.splice(indexToRemowe, 1);
+    renderExpenses();
+    expensesUpdateSum();
+  }
 };
 
 const incomesUpdateSum = () => {
   incomesSum = incomes.reduce((prevValue, curentValue) => {
     return +prevValue + +curentValue.amount;
   }, 0);
-  budgetValue = incomesSum;
+  budgetValue = incomesSum - expensesSum;
+  // renderText(budgetValue);
   document.getElementById("incomesValue").innerHTML = incomesSum;
   document.getElementById("budgetValue").innerHTML = budgetValue;
 };
@@ -257,7 +243,15 @@ const expensesUpdateSum = () => {
   expensesSum = expenses.reduce((prevValue, curentValue) => {
     return +prevValue + +curentValue.amount;
   }, 0);
-  totalExpanses = expensesSum;
+  budgetValue = incomesSum - expensesSum;
   document.getElementById("expensesValue").innerHTML = expensesSum;
-  document.getElementById("budgetValue").innerHTML = budgetValue - expensesSum;
+  document.getElementById("budgetValue").innerHTML = budgetValue;
 };
+
+// const renderText = (amount) => {
+//   if (amount > 0) {
+//     text.innerText = "You can spend: ";
+//   } else if (amount === 0) {
+//     text.innerText = "You have no money. You budget is: ";
+//   } else text.innerText = "You are in troubles, your budget is: ";
+// };
