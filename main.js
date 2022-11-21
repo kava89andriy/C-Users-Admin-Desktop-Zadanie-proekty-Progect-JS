@@ -8,8 +8,6 @@ const inputAmountExpenses = document.querySelector("#expenseValue");
 const inputSubmitExpenses = document.querySelector("#expenseForm");
 const expensesList = document.querySelector("#expensesList");
 
-
-
 let incomesSum = 0;
 let totalExpanses = 0;
 let budgetValue = 0;
@@ -106,28 +104,27 @@ function renderIncomes() {
       nameInput.value = element.title;
       const amountInput = document.createElement("input");
       amountInput.value = element.amount;
+      amountInput.type = "number";
       span.appendChild(nameInput);
       span.appendChild(amountInput);
       saveButton.addEventListener("click", () => {
-        const updateIncome = (item) => {
-          item.title = nameInput.value;
-          item.amount = amountInput.value;
-        };
-        incomes.map((item) =>
-          item.id === element.id ? updateIncome(item) : item
-        );
-        incomesUpdateSum();
-        renderIncomes();
-        incomes.map((item) => item.id === element.id);
+        if (amountInput.value < 0) {
+          alert("The value can not be below 0");
+        } else {
+          const updateIncome = (item) => {
+            item.title = nameInput.value;
+            item.amount = amountInput.value;
+          };
+          incomes.map((item) =>
+            item.id === element.id ? updateIncome(item) : item
+          );
+          incomesUpdateSum();
+          renderIncomes();
+          incomes.map((item) => item.id === element.id);
+        }
       });
 
       cancelButton.addEventListener("click", () => {
-        // editButton.classList.remove("budget__list__item__button--not-visible");
-        // deleteButton.classList.remove("budget__list__item__button--not-visible");
-        // saveButton.classList.add("budget__list__item__button--not-visible");
-        // cancelButton.classList.add("budget__list__item__button--not-visible");
-        // span.removeChild(nameInput);
-        // span.removeChild(amountInput);
         renderIncomes();
       });
     });
@@ -191,20 +188,27 @@ function renderExpenses() {
       nameInput.value = element.title;
       const amountInput = document.createElement("input");
       amountInput.value = element.amount;
+      amountInput.type = "number";
+
       span.appendChild(nameInput);
       span.appendChild(amountInput);
       saveButton.addEventListener("click", () => {
-        const updateIncome = (item) => {
-          item.title = nameInput.value;
-          item.amount = amountInput.value;
-        };
-        expenses.map((item) =>
-          item.id === element.id ? updateIncome(item) : item
-        );
-        expensesUpdateSum();
-        renderExpenses();
+        if (amountInput.value < 0) {
+          alert("The value can not be below 0");
+        } else {
+          const updateIncome = (item) => {
+            item.title = nameInput.value;
+            item.amount = amountInput.value;
+          };
+        
+          expenses.map((item) =>
+            item.id === element.id ? updateIncome(item) : item
+          );
+          expensesUpdateSum();
+          renderExpenses();
 
-        expenses.map((item) => item.id === element.id);
+          expenses.map((item) => item.id === element.id);
+        }
       });
 
       cancelButton.addEventListener("click", () => {
@@ -235,7 +239,7 @@ const incomesUpdateSum = () => {
     return +prevValue + +curentValue.amount;
   }, 0);
   budgetValue = incomesSum - expensesSum;
-  
+
   document.getElementById("incomesValue").innerHTML = incomesSum;
   document.getElementById("budgetValue").innerHTML = budgetValue;
   renderText(incomesSum, expensesSum, budgetValue);
@@ -268,4 +272,3 @@ const renderText = (amount, expense, difference) => {
   </p>`;
   }
 };
-
