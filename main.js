@@ -1,5 +1,5 @@
-const inputName = document.querySelector("#incomeTitle");
-const inputAmount = document.querySelector("#incomeValue");
+const inputName = document.getElementById("incomeTitle");
+const inputAmount = document.getElementById("incomeValue");
 const inputSubmit = document.querySelector("#incomeForm");
 const incomesList = document.querySelector("#incomesList");
 
@@ -7,6 +7,7 @@ const inputNameExpenses = document.querySelector("#expenseTitle");
 const inputAmountExpenses = document.querySelector("#expenseValue");
 const inputSubmitExpenses = document.querySelector("#expenseForm");
 const expensesList = document.querySelector("#expensesList");
+const budget = document.getElementById("budgetValue");
 
 let incomesSum = 0;
 let totalExpanses = 0;
@@ -19,8 +20,8 @@ const expenses = [];
 const addItem = (type) => {
   if (type === "incomes") {
     const newIncome = {
-      title: document.getElementById("incomeTitle").value,
-      amount: Number(document.getElementById("incomeValue").value),
+      title: inputName.value,
+      amount: Number(inputAmount.value),
       id: (Math.random() * 100000).toFixed(0),
     };
     incomes.push(newIncome);
@@ -28,8 +29,8 @@ const addItem = (type) => {
     renderIncomes();
   } else {
     const newExpenses = {
-      title: document.getElementById("expenseTitle").value,
-      amount: Number(document.getElementById("expenseValue").value),
+      title: inputNameExpenses.value,
+      amount: Number(inputAmountExpenses.value),
       id: (Math.random() * 100000).toFixed(0),
     };
     expenses.push(newExpenses);
@@ -200,7 +201,7 @@ function renderExpenses() {
             item.title = nameInput.value;
             item.amount = amountInput.value;
           };
-        
+
           expenses.map((item) =>
             item.id === element.id ? updateIncome(item) : item
           );
@@ -239,9 +240,8 @@ const incomesUpdateSum = () => {
     return +prevValue + +curentValue.amount;
   }, 0);
   budgetValue = incomesSum - expensesSum;
-
   document.getElementById("incomesValue").innerHTML = incomesSum;
-  document.getElementById("budgetValue").innerHTML = budgetValue;
+  budget.innerHTML = budgetValue;
   renderText(incomesSum, expensesSum, budgetValue);
 };
 
@@ -251,7 +251,7 @@ const expensesUpdateSum = () => {
   }, 0);
   budgetValue = incomesSum - expensesSum;
   document.getElementById("expensesValue").innerHTML = expensesSum;
-  document.getElementById("budgetValue").innerHTML = budgetValue;
+  budget.innerHTML = budgetValue;
   renderText(incomesSum, expensesSum, budgetValue);
 };
 
